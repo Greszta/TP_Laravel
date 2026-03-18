@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Etudiant;
 use App\Models\VIlle;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 
 class EtudiantController extends Controller
@@ -34,21 +35,20 @@ class EtudiantController extends Controller
     {
 
         $request->validate([
-            'nom' => 'required|min:2|max:255',
             'adresse' => 'required',
             'telephone' => 'required|unique:etudiants',
-            'email' => 'required|email|max:100|unique:etudiants',
             'date_de_naissance' => 'required|date',
             'ville_id' => 'required',
         ]);
 
         $etudiant = Etudiant::create([
-            'nom' => $request->nom,
+            'nom' => Auth::user()->name,
             'adresse' => $request->adresse,
             'telephone' => $request->telephone,
-            'email' => $request->email,
+            'email' => Auth::user()->email,
             'date_de_naissance' => $request->date_de_naissance,
-            'ville_id' => $request->ville_id
+            'ville_id' => $request->ville_id,
+            'user_id' => Auth::id(),
         ]);
 
         return redirect()->route('etudiant.show', $etudiant->id)->with('success', 'Nouvel étudiant crée avec succes!');

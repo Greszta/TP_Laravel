@@ -5,23 +5,19 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Etudiant extends Model
+class Document extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'nom',
-        'adresse',
-        'telephone',
-        'email',
-        'date_de_naissance',
-        'ville_id',
+        'title',
+        'filename',
         'user_id'
     ];
 
-    public function ville() {
-        return $this->belongsTo(Ville::class);
-    }
+    protected $casts = [
+        'title' => 'array'
+    ];
 
     public function user() {
         return $this->belongsTo(User::class);
